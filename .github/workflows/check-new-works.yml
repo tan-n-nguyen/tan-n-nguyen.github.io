@@ -21,7 +21,9 @@ jobs:
         run: |
           python scripts/check_new_works.py --sample tests/sample_openalex.json --out /tmp/test.md
           grep -q "A brand new isogeometric shell paper" /tmp/test.md
-          test "$(grep -c '^- \[ \]' /tmp/test.md)" = "1"
+          grep -q "minimal surface plates" /tmp/test.md
+          ! grep -q "hybrid assignment training" /tmp/test.md
+          test "$(grep -c '^- \[ \]' /tmp/test.md)" = "2"
       - name: Look up works for the ORCID
         run: python scripts/check_new_works.py
       - name: Open or update the review issue

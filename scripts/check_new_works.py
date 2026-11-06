@@ -9,6 +9,7 @@ Run offline for testing:
     python scripts/check_new_works.py --sample tests/sample_openalex.json
 """
 import argparse
+import difflib
 import json
 import re
 import sys
@@ -86,6 +87,12 @@ def crossref_works() -> list:
     return out
 
 
+def matches(key: str, pool: set, cutoff: float = 0.95) -> bool:
+    """Exact match, or a near match that tolerates small wording differences
+    between databases (e.g. 'training' vs 'trainings')."""
+    return key in pool or bool(difflib.get_close_matches(key, pool, n=1, cutoff=cutoff))
+
+
 KEEP_TYPES = {"article", "review", "journal-article", "proceedings-article", "book-chapter", "conference-paper"}
 
 
@@ -93,7 +100,7 @@ def candidates(works: list, known: set, excluded: set) -> list:
     seen, out = set(), []
     for w in works:
         key = norm(w["title"])
-        if not key or key in known or key in excluded or key in seen:
+        if not key or key in seen or matches(key, known) or matches(key, excluded):
             continue
         if w.get("year") and w["year"] < MIN_YEAR:
             continue
