@@ -1,0 +1,507 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta property="og:title" content="Tan N. Nguyen">
+<meta property="og:description" content="Associate Professor of Architectural Engineering, Sejong University. Computational mechanics, isogeometric analysis, nonlinear stability of plates and shells.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 32 32%22%3E%3Ccircle cx=%2216%22 cy=%2216%22 r=%2215%22 fill=%22%231f4fd1%22/%3E%3Ctext x=%2216%22 y=%2221%22 font-size=%2214%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Georgia%22%3ETN%3C/text%3E%3C/svg%3E">
+<style>:root{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+<title>Tan N. Nguyen</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Tan N. Nguyen, Associate Professor of Architectural Engineering, Sejong University. Computational mechanics, isogeometric analysis, nonlinear stability of plates and shells, data-driven solvers.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky left column (identity + nav) beside one reading column; stacks on phones.
+   Signature: a shell panel in its buckled mode, coloured like an FE displacement contour. */
+:root{
+  --bg:#f6f7f9; --surface:#ffffff; --ink:#141a24; --ink-2:#4a5466; --ink-3:#737c8d; --rule:#dde1e8;
+  --accent:#1f4fd1; --accent-soft:#e7edfc;
+  --c1:#2b5fd9; --c2:#1aa0a6; --c3:#d9a425; --c4:#c8432d;
+  --f-display:"Instrument Serif","Iowan Old Style",Georgia,serif;
+  --f-body:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+  --s-xs:.75rem; --s-sm:.875rem; --s-md:1rem; --s-lg:1.2rem; --s-xl:1.75rem; --s-2xl:2.6rem;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#0f131a; --surface:#161b24; --ink:#e8ecf2; --ink-2:#a9b2c1; --ink-3:#848d9e; --rule:#262d3a;
+  --accent:#7d9cff; --accent-soft:#1b2440; --c1:#5d86ff; --c2:#34c0c4; --c3:#f0bd47; --c4:#ef6a52; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0f131a; --surface:#161b24; --ink:#e8ecf2; --ink-2:#a9b2c1; --ink-3:#848d9e; --rule:#262d3a;
+  --accent:#7d9cff; --accent-soft:#1b2440; --c1:#5d86ff; --c2:#34c0c4; --c3:#f0bd47; --c4:#ef6a52; color-scheme:dark}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:var(--s-md);line-height:1.6;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));padding-right:max(16px, env(safe-area-inset-right, 0px))}
+a{color:var(--accent);text-decoration-thickness:1px;text-underline-offset:3px}
+a:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.wrap{max-width:1180px;margin:0 auto;display:grid;grid-template-columns:280px minmax(0,1fr);gap:clamp(2rem,5vw,4.5rem);padding-block:3rem 4rem}
+@media (max-width:900px){.wrap{grid-template-columns:minmax(0,1fr);padding-block:1.5rem 3rem}}
+
+aside{position:sticky;top:calc(env(safe-area-inset-top,0px) + 2rem);align-self:start;display:flex;flex-direction:column;gap:1.4rem;max-height:calc(100vh - 4rem);overflow:auto}
+@media (max-width:900px){aside{position:static;max-height:none}}
+.photo{width:120px;height:120px;border-radius:50%;object-fit:cover;border:1px solid var(--rule);background:var(--accent-soft)}
+.mono{width:80px;height:80px;border-radius:50%;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-family:var(--f-display);font-size:2.2rem;border:1px solid var(--rule)}
+.name{font-family:var(--f-display);font-weight:400;font-size:var(--s-2xl);line-height:1.02;letter-spacing:-.01em}
+.role{color:var(--ink-2);font-size:var(--s-sm);display:flex;flex-direction:column;gap:.1rem}
+.role b{color:var(--ink);font-weight:600}
+nav ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;border-left:1px solid var(--rule)}
+nav a{display:block;padding:.26rem 0 .26rem .9rem;margin-left:-1px;border-left:2px solid transparent;color:var(--ink-2);text-decoration:none;font-size:var(--s-sm)}
+nav a:hover{color:var(--ink);border-left-color:var(--ink-3)}
+nav a.on{color:var(--ink);border-left-color:var(--accent);font-weight:500}
+@media (max-width:900px){nav ul{flex-direction:row;flex-wrap:wrap;gap:.4rem;border-left:0}
+  nav a{border:1px solid var(--rule);border-radius:999px;padding:.22rem .7rem;margin:0}
+  nav a.on{border-color:var(--accent)}}
+.links{display:flex;flex-wrap:wrap;gap:.45rem}
+.links a{font-family:var(--f-mono);font-size:var(--s-xs);border:1px solid var(--rule);border-radius:4px;padding:.25rem .55rem;text-decoration:none;color:var(--ink-2);background:var(--surface)}
+.links a:hover{color:var(--accent);border-color:var(--accent)}
+
+main{display:flex;flex-direction:column;gap:4.25rem;min-width:0}
+section{display:flex;flex-direction:column;gap:1.3rem;scroll-margin-top:2rem;min-width:0}
+.eyebrow{font-family:var(--f-mono);font-size:var(--s-xs);text-transform:uppercase;letter-spacing:.12em;color:var(--ink-3)}
+h2{font-family:var(--f-display);font-weight:400;font-size:var(--s-xl);line-height:1.15}
+h3{font-size:var(--s-md);font-weight:600}
+p{margin:0;max-width:68ch;color:var(--ink-2)}
+p.lede{font-size:var(--s-lg);color:var(--ink);line-height:1.55}
+.note{font-size:var(--s-xs);color:var(--ink-3)}
+.head{display:flex;flex-direction:column;gap:.35rem}
+
+.figure{border:1px solid var(--rule);border-radius:6px;background:var(--surface);overflow:hidden}
+.figure canvas{display:block;width:100%;height:clamp(220px,32vw,320px)}
+.cap{display:flex;flex-wrap:wrap;justify-content:space-between;gap:.5rem 1rem;padding:.6rem .9rem;border-top:1px solid var(--rule);font-family:var(--f-mono);font-size:var(--s-xs);color:var(--ink-3)}
+.legend{display:flex;align-items:center;gap:.5rem}
+.legend i{display:block;width:90px;height:8px;border-radius:2px;background:linear-gradient(90deg,var(--c1),var(--c2),var(--c3),var(--c4))}
+
+/* metrics */
+.mgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.6fr);gap:1.5rem;align-items:stretch}
+@media (max-width:700px){.mgrid{grid-template-columns:minmax(0,1fr)}}
+table.idx{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+table.idx th,table.idx td{padding:.65rem .4rem;border-bottom:1px solid var(--rule);text-align:right}
+table.idx th:first-child,table.idx td:first-child{text-align:left}
+table.idx thead th{font-family:var(--f-mono);font-size:var(--s-xs);font-weight:500;color:var(--ink-3);text-transform:uppercase;letter-spacing:.08em}
+table.idx tbody td{font-family:var(--f-display);font-size:1.7rem;line-height:1;color:var(--ink)}
+table.idx tbody td:first-child{font-family:var(--f-body);font-size:var(--s-sm);color:var(--ink-2)}
+.chart{border:1px solid var(--rule);border-radius:6px;background:var(--surface);padding:.9rem 1rem .6rem;display:flex;flex-direction:column;gap:.4rem;min-width:0}
+.chart svg{width:100%;height:auto;display:block}
+.chart .tt{font-size:var(--s-xs);color:var(--ink-3);font-family:var(--f-mono)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+.stats div{background:var(--surface);padding:.8rem 1rem;display:flex;flex-direction:column;gap:.1rem}
+.stats strong{font-family:var(--f-display);font-weight:400;font-size:1.6rem;line-height:1;font-variant-numeric:tabular-nums}
+.stats span{font-size:var(--s-xs);color:var(--ink-3)}
+
+/* themes */
+.themes{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);border-radius:6px;overflow:hidden}
+@media (max-width:620px){.themes{grid-template-columns:minmax(0,1fr)}}
+.theme{background:var(--surface);padding:1.15rem 1.25rem;display:flex;flex-direction:column;gap:.4rem;min-width:0}
+.theme p{font-size:var(--s-sm)}
+.tag{font-family:var(--f-mono);font-size:var(--s-xs);color:var(--accent)}
+
+/* timeline */
+.tl{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.tl li{display:grid;grid-template-columns:8.5rem minmax(0,1fr);gap:1rem;padding:.8rem 0;border-top:1px solid var(--rule)}
+.tl li:last-child{border-bottom:1px solid var(--rule)}
+.tl .d{font-family:var(--f-mono);font-size:var(--s-sm);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.tl .w{color:var(--ink);display:flex;flex-direction:column;gap:.15rem}
+.tl .w small{color:var(--ink-2);font-size:var(--s-sm)}
+@media (max-width:480px){.tl li{grid-template-columns:minmax(0,1fr);gap:.1rem}}
+
+/* publications */
+.bar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center}
+.bar input{flex:1 1 220px;min-width:0;font:inherit;font-size:var(--s-sm);padding:.45rem .7rem;border:1px solid var(--rule);border-radius:4px;background:var(--surface);color:var(--ink)}
+.seg{display:flex;flex-wrap:wrap;gap:.35rem}
+.seg button{font:inherit;font-size:var(--s-xs);font-family:var(--f-mono);border:1px solid var(--rule);background:var(--surface);color:var(--ink-2);border-radius:999px;padding:.3rem .8rem;cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+ol.pubs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.pub{display:grid;grid-template-columns:3.2rem minmax(0,1fr) 5.5rem;gap:.2rem 1rem;padding:.9rem 0;border-top:1px solid var(--rule)}
+.pub:last-child{border-bottom:1px solid var(--rule)}
+.pub .yr{font-family:var(--f-mono);font-size:var(--s-sm);color:var(--ink-3);font-variant-numeric:tabular-nums;padding-top:.1rem}
+.pub .t{color:var(--ink);font-weight:500;line-height:1.4}
+.pub .a{font-size:var(--s-sm);color:var(--ink-2)}
+.pub .a b{color:var(--ink);font-weight:600}
+.pub .v{font-size:var(--s-sm);color:var(--ink-3);font-style:italic}
+.pub .ct{font-family:var(--f-mono);font-size:var(--s-xs);color:var(--ink-3);text-align:right;padding-top:.15rem;font-variant-numeric:tabular-nums}
+.pub .ct strong{display:block;font-family:var(--f-display);font-weight:400;font-size:1.35rem;color:var(--ink);line-height:1}
+@media (max-width:560px){.pub{grid-template-columns:minmax(0,1fr)}.pub .ct{text-align:left}.pub .ct strong{display:inline;font-size:1rem;margin-right:.3rem}}
+.rank .yr{font-family:var(--f-display);font-size:1.6rem;color:var(--accent);line-height:1}
+.yearhead{font-family:var(--f-display);font-size:1.3rem;color:var(--ink);padding:1.1rem 0 .2rem}
+.count{font-family:var(--f-mono);font-size:var(--s-xs);color:var(--ink-3)}
+
+/* service */
+.cols{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:2rem}
+@media (max-width:620px){.cols{grid-template-columns:minmax(0,1fr)}}
+.block{display:flex;flex-direction:column;gap:.6rem;min-width:0}
+.block h3{font-size:var(--s-sm);text-transform:uppercase;letter-spacing:.08em}
+.plain{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:.5rem;font-size:var(--s-sm);color:var(--ink-2)}
+.plain li span{color:var(--ink-3)}
+.chips{display:flex;flex-wrap:wrap;gap:.35rem}
+.chips span{font-size:var(--s-xs);border:1px solid var(--rule);border-radius:4px;padding:.2rem .5rem;color:var(--ink-2);background:var(--surface)}
+.todo{border:1px dashed var(--ink-3);border-radius:6px;padding:1rem 1.1rem;font-size:var(--s-sm);color:var(--ink-2);background:var(--surface)}
+
+.contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+.contact div{display:flex;flex-direction:column;gap:.2rem;min-width:0}
+.contact .k{font-family:var(--f-mono);font-size:var(--s-xs);text-transform:uppercase;letter-spacing:.1em;color:var(--ink-3)}
+.contact .val{color:var(--ink);overflow-wrap:anywhere;user-select:all}
+.copy{align-self:flex-start;font:inherit;font-size:var(--s-xs);font-family:var(--f-mono);background:none;border:1px solid var(--rule);color:var(--ink-2);border-radius:4px;padding:.2rem .55rem;cursor:pointer}
+.copy:hover{border-color:var(--accent);color:var(--accent)}
+footer{font-size:var(--s-xs);color:var(--ink-3);border-top:1px solid var(--rule);padding-top:1rem}
+</style>
+</head>
+<body>
+
+
+<div class="wrap">
+  <aside>
+    <img class="photo" src="data:image/jpeg;base64,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" alt="Portrait of Tan N. Nguyen" width="120" height="120">
+    <div style="display:flex;flex-direction:column;gap:.6rem">
+      <h1 class="name">Tan N. Nguyen</h1>
+      <div class="role">
+        <b>Associate Professor</b>
+        <span>Department of Architectural Engineering</span>
+        <span>Sejong University, Seoul, Korea</span>
+        <span style="margin-top:.35rem">Visiting Professor, Walailak University, Thailand</span>
+      </div>
+    </div>
+    <nav aria-label="Sections"><ul id="nav">
+      <li><a href="#about" class="on">About</a></li>
+      <li><a href="#metrics">Citation metrics</a></li>
+      <li><a href="#research">Research interests</a></li>
+      <li><a href="#activities">Research activities</a></li>
+      <li><a href="#experience">Research experience</a></li>
+      <li><a href="#teaching">Teaching</a></li>
+      <li><a href="#education">Education</a></li>
+      <li><a href="#selected">Representative papers</a></li>
+      <li><a href="#cited">Most-cited papers</a></li>
+      <li><a href="#publications">Publication list</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul></nav>
+    <div class="links">
+      <a href="https://scholar.google.com/citations?user=j2SYwykAAAAJ" target="_blank" rel="noopener">Google Scholar</a>
+      <a href="https://orcid.org/0000-0001-7734-2058" target="_blank" rel="noopener">ORCID</a>
+      <a href="https://sejong.elsevierpure.com/en/persons/tan-n-nguyen/" target="_blank" rel="noopener">Sejong Pure profile</a>
+      <a href="https://prof.sejong.ac.kr/tnnguyen/index.do" target="_blank" rel="noopener">University page</a>
+    </div>
+  </aside>
+
+  <main>
+    <section id="about">
+      <div class="eyebrow">Computational solid mechanics</div>
+      <p class="lede">I develop numerical methods for thin-walled structures — isogeometric and meshfree formulations for plates and shells made of advanced materials — and use them to study large deflection, buckling and postbuckling. A second line of work brings deep learning into the nonlinear solver itself and into structural engineering practice.</p>
+      <div class="figure">
+        <canvas id="shell" aria-label="Animated wireframe of a cylindrical shell panel in a buckled mode, coloured by radial displacement"></canvas>
+        <div class="cap"><span>Cylindrical panel under axial compression · buckling mode (m, n) = (3, 2)</span><span class="legend">w/w<sub>max</sub> −1 <i></i> +1</span></div>
+      </div>
+    </section>
+
+    <section id="metrics">
+      <div class="head"><div class="eyebrow">Bibliometrics</div><h2>Citation metrics</h2></div>
+      <div class="mgrid">
+        <table class="idx" aria-label="Google Scholar indices">
+          <thead><tr><th></th><th>All</th><th>Since 2021</th></tr></thead>
+          <tbody>
+            <tr><td>Citations</td><td>4,012</td><td>3,806</td></tr>
+            <tr><td>h-index</td><td>27</td><td>27</td></tr>
+            <tr><td>i10-index</td><td>40</td><td>40</td></tr>
+          </tbody>
+        </table>
+        <div class="chart">
+          <span class="tt">Citations per year</span>
+          <svg id="cites" viewBox="0 0 560 230" role="img" aria-label="Bar chart of citations per year, 2018 to 2026"></svg>
+        </div>
+      </div>
+      <div class="stats" id="stats"></div>
+      <p class="note">Source: Google Scholar profile, retrieved 6 November 2026. The 2026 bar covers January to early November.</p>
+    </section>
+
+    <section id="research">
+      <div class="head"><div class="eyebrow">Research</div><h2>Research interests</h2></div>
+      <div class="themes">
+        <div class="theme"><span class="tag">IGA · NURBS</span><h3>Isogeometric analysis of plates and shells</h3><p>Exact-geometry NURBS discretisations for thin and moderately thick shells, membranes and ultra-thin structures, including form finding and large-deflection analysis.</p></div>
+        <div class="theme"><span class="tag">Nonlinear · Stability</span><h3>Buckling and postbuckling</h3><p>Geometrically nonlinear response of imperfect shells under axial and combined loading; tracing of limit points and snap-through.</p></div>
+        <div class="theme"><span class="tag">FGM · CNTRC · TPMS</span><h3>Advanced and architected materials</h3><p>Functionally graded, carbon-nanotube-reinforced, graphene-platelet and triply periodic minimal surface structures, including porosity and sandwich layouts.</p></div>
+        <div class="theme"><span class="tag">Meshfree</span><h3>Moving Kriging meshfree methods</h3><p>Improved moving Kriging formulations with refined and quasi-3D theories for static, vibration and nonlinear bending analysis.</p></div>
+        <div class="theme"><span class="tag">Data-driven solvers</span><h3>Deep learning inside nonlinear solvers</h3><p>Learned predictors that shorten Newton–Raphson iteration, time-series forecasting of load paths, and coarse-mesh analysis corrected by recurrent networks.</p></div>
+        <div class="theme"><span class="tag">AI in construction</span><h3>Machine learning for structural engineering</h3><p>Defect detection in concrete, masonry, tunnels and sewers; capacity prediction of structural members; explainable AI for engineering decisions.</p></div>
+      </div>
+    </section>
+
+    <section id="activities">
+      <div class="head"><div class="eyebrow">Service to the community</div><h2>Research activities</h2></div>
+      <div class="cols">
+        <div class="block">
+          <h3>Editorial boards</h3>
+          <ul class="plain">
+            <li><a href="https://ascelibrary.org/page/jsdccc/editorialboard" target="_blank" rel="noopener">Journal of Structural Design and Construction Practice</a> <span>(ASCE)</span></li>
+            <li><a href="https://www.mdpi.com/journal/technologies/sectioneditors/construction" target="_blank" rel="noopener">Technologies</a> <span>(MDPI), Construction Technologies Section</span></li>
+            <li><a href="https://www.techscience.com/cmc/editors" target="_blank" rel="noopener">CMC – Computers, Materials &amp; Continua</a></li>
+          </ul>
+        </div>
+        <div class="block">
+          <h3>Grant review, conferences and visiting posts</h3>
+          <ul class="plain">
+            <li>Visiting Professor, Walailak University, Thailand</li>
+            <li>Reviewer of research proposals, National Foundation for Science and Technology Development (NAFOSTED), Vietnam <span>— 3 proposals in 2023, 3 in 2025</span></li>
+            <li>Mini-symposium organiser, “Nonlinear Analyses of Structures and Deep Learning for Structural Engineering”, CMMM 2020, Malaysia</li>
+            <li>Conference reviewer: International Conference on Advances in Computational Mechanics 2017, Vietnam; 5th International Conference on Green Technology and Sustainable Development 2020, Da Nang, Vietnam</li>
+          </ul>
+        </div>
+      </div>
+      <div class="block">
+        <h3>Conference presentations</h3>
+        <ul class="plain">
+          <li>International Conference on Sustainable Civil Engineering and Architecture (ICSCEA) <span>— Vietnam, 2019</span></li>
+          <li>10th International Conference on Computational Methods (ICCM) <span>— Singapore, 2019</span></li>
+          <li>12th Asian Pacific Conference on Shell and Spatial Structures (APCS) <span>— Malaysia, 2018</span></li>
+          <li>International Conference on Advances in Computational Mechanics (ACOME) <span>— Vietnam, 2017</span></li>
+        </ul>
+      </div>
+      <div class="block">
+        <h3>Reviewer for 31 international journals</h3>
+        <div class="chips" id="journals"></div>
+      </div>
+    </section>
+
+    <section id="experience">
+      <div class="head"><div class="eyebrow">Career</div><h2>Research experience</h2></div>
+      <ol class="tl">
+        <li><span class="d">2026 – now</span><span class="w">Associate Professor<small>Department of Architectural Engineering, Sejong University, Seoul, Korea</small></span></li>
+        <li><span class="d">current</span><span class="w">Visiting Professor<small>Walailak University, Thailand</small></span></li>
+        <li><span class="d">2026 – now</span><span class="w">Academic Consultant<small>Van Hien University, Vietnam</small></span></li>
+        <li><span class="d">2024 – 2026</span><span class="w">Academic Consultant<small>Van Lang University, Vietnam</small></span></li>
+        <li><span class="d">2020 – 2026</span><span class="w">Assistant Professor<small>Department of Architectural Engineering, Sejong University, Seoul, Korea</small></span></li>
+        <li><span class="d">2017 – 2020</span><span class="w">Doctoral researcher<small>Sejong University · isogeometric postbuckling of FG-CNTRC shells and data-driven nonlinear solvers</small></span></li>
+        <li><span class="d">2014 – 2017</span><span class="w">Researcher in computational mechanics<small>Vietnam · meshfree moving Kriging methods for FGM and sandwich plates</small></span></li>
+        <li><span class="d">2008 – 2012</span><span class="w">Civil engineer<small>Ho Chi Minh City, Vietnam</small></span></li>
+      </ol>
+    </section>
+
+    <section id="teaching">
+      <div class="head"><div class="eyebrow">Teaching</div><h2>Teaching</h2></div>
+      <ol class="tl">
+        <li><span class="d">2020 – now</span><span class="w">Department of Architectural Engineering, Sejong University<small>Undergraduate and graduate courses</small></span></li>
+        <li><span class="d">2013 – 2016</span><span class="w">Lecturer, Department of Civil Engineering, Ton Duc Thang University, Vietnam</span></li>
+      </ol>
+      <div class="block"><h3>Courses taught</h3>
+        <div class="themes">
+          <div class="theme"><span class="tag">Fundamental · Advanced</span><h3>Finite Element Methods</h3><p>Weak forms, element formulation and assembly, through to advanced topics in structural finite element analysis.</p></div>
+          <div class="theme"><span class="tag">Fundamental · Advanced</span><h3>Mechanics of Materials</h3><p>Stress, strain and deformation of structural members, extended to advanced problems in solid mechanics.</p></div>
+          <div class="theme"><span class="tag">Graduate topic</span><h3>Elastic Stability</h3><p>Buckling of columns, plates and shells; bifurcation, limit points and imperfection sensitivity.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="education">
+      <div class="head"><div class="eyebrow">Degrees and honours</div><h2>Education</h2></div>
+      <ol class="tl">
+        <li><span class="d">2017 – 2020</span><span class="w">Ph.D., Architectural Engineering<small>Sejong University, Korea · thesis defended 26 November 2019 · degree conferred February 2020</small></span></li>
+        <li><span class="d">2009 – 2011</span><span class="w">M.Sc., Civil Engineering<small>Ho Chi Minh City University of Technology (HCMUT), Vietnam</small></span></li>
+        <li><span class="d">2003 – 2008</span><span class="w">B.Eng., Civil Engineering<small>Ho Chi Minh City University of Architecture, Vietnam</small></span></li>
+      </ol>
+      <div class="block"><h3>Awards</h3><ul class="plain">
+        <li>Outstanding Research Award, Ph.D. program, Sejong University <span>— February 2020</span></li>
+        <li>Full doctoral scholarship, Sejong University <span>— 2017–2019</span></li>
+        <li>Half doctoral scholarship, Yonsei University <span>— 2016–2017</span></li>
+      </ul></div>
+    </section>
+
+    <section id="selected">
+      <div class="head"><div class="eyebrow">Publications</div><h2>Representative papers</h2>
+      <p>First-author papers that define the main lines of the research.</p></div>
+      <ol class="pubs" id="sel"></ol>
+    </section>
+
+    <section id="cited">
+      <div class="head"><div class="eyebrow">Publications</div><h2>Most-cited papers</h2></div>
+      <ol class="pubs" id="top"></ol>
+    </section>
+
+    <section id="publications">
+      <div class="head"><div class="eyebrow">Publications</div><h2>Publication list</h2></div>
+      <div class="bar">
+        <input type="search" id="q" placeholder="Search title, co-author or journal" aria-label="Search publications">
+        <div class="seg" role="group" aria-label="Filter by area">
+          <button type="button" id="a-all" data-a="all" aria-pressed="true">All</button>
+          <button type="button" id="a-mech" data-a="mech" aria-pressed="false">Mechanics &amp; structures</button>
+          <button type="button" id="a-ai" data-a="ai" aria-pressed="false">AI &amp; data science</button>
+          <button type="button" id="a-oth" data-a="oth" aria-pressed="false">Other</button>
+        </div>
+      </div>
+      <span class="count" id="count"></span>
+      <div id="all"></div>
+      <p class="note">Journal and conference papers listed on Google Scholar, duplicates removed. Records are also available on the <a href="https://sejong.elsevierpure.com/en/persons/tan-n-nguyen/" target="_blank" rel="noopener">Sejong University Pure profile</a>. Citation counts as of 6 November 2026.</p>
+    </section>
+
+    <section id="contact">
+      <div class="head"><div class="eyebrow">Contact</div><h2>Get in touch</h2></div>
+      <p>Prospective graduate students and collaborators working on plates, shells, nonlinear stability or data-driven mechanics are welcome to write.</p>
+      <div class="contact">
+        <div><span class="k">Email</span><span class="val" id="email">tnnguyen@sejong.ac.kr</span><button class="copy" type="button" id="copy-email" data-target="email">Copy</button></div>
+        <div><span class="k">Gmail</span><span class="val" id="gmail">nguyenngoctan.tdt@gmail.com</span><button class="copy" type="button" id="copy-gmail" data-target="gmail">Copy</button></div>
+        <div><span class="k">Phone</span><span class="val">+82 2 6935 2598</span></div>
+        <div><span class="k">Office</span><span class="val">창303, Sejong University<br>209 Neungdong-ro, Gwangjin-gu, Seoul 05006, Korea</span></div>
+      </div>
+      <footer>© 2026 Tan N. Nguyen · Last updated November 2026</footer>
+    </section>
+  </main>
+</div>
+
+<script>
+/* [year, citations, title, authors, venue] from Google Scholar, 6 Nov 2026; duplicates and the expression-of-concern notice removed */
+const P=[
+["2026","","AgriEyeNet: Seeing smarter in agriculture with medium-difficulty aware loss and lightweight adaptive detection","J Cao, H Wang, M Ma, Y Li, D Qiu, Y Chen, TN Nguyen, LM Dang","Applied Intelligence 56 (16), 502"],
+["2026","","Dynamics of compressive performance in textile-reinforced concrete: A machine-learning approach for failure mode and strength prediction","M Mirrashid, NM Okasha, H Naderpour, N Ezami, TN Nguyen, A Jafari","Journal of Structural Design and Construction Practice 31 (4), 04026086"],
+["2026","1","LSCDNet: leveraging fine-grained contextual cues for precise detection of small target crop disease spots in complex field environments","M Ma, Y Li, J Cao, H Wang, TN Nguyen, LM Dang","Computers and Electronics in Agriculture 252, 112095"],
+["2026","","Damage evaluation in bio-inspired sinusoidal corrugated helicoidal laminated composite plate subjected to eccentric bird strike","A Garg, Z Zhu, MO Belarbi, F Tornabene, TN Nguyen, R Dimitri","Composite Structures, 120702"],
+["2026","7","Finite element model for linear and nonlinear response of sandwich curved beams composed of FG-GPLRC faces and FG-TPMS core under multiple moving forces","W Songsuwan, N Wattanasakulpong, W Jiammeepreecha, C Athisakul, et al.","Advances in Engineering Software 217, 104163"],
+["2026","","Post-buckling analysis of FG-TPMS shells with geometric imperfection and porosity under axial compression","TN Nguyen, MO Belarbi, TK Nguyen, CV Le, A Garg","Computer Modeling in Engineering & Sciences 147 (2), 12"],
+["2026","2","Physics-guided graph convolutional network framework for inverse design of bioinspired helicoidal laminates","A Garg, NK Shukla, MO Belarbi, TN Nguyen, R Raman, A Garg","Advanced Engineering Materials 28 (8), e202502703"],
+["2026","2","An accurate coarse mesh-based analysis approach for nonlinear bending and post-buckling problems of plates and shells utilizing recurrent neural networks with Bayesian regularization back-propagation algorithm","TN Nguyen, TK Nguyen, S Eiadtrong, N Wattanasakulpong, MO Belarbi, et al.","Finite Elements in Analysis and Design 256, 104525"],
+["2026","2","TumorNet: A hybrid lightweight framework for brain tumor classification and reasoning","H Wang, M Zaqeem, M Fayaz, D Qiu, S Ahadzadeh, TN Nguyen, et al.","Information Sciences, 123423"],
+["2026","1","Structural, electronic, optical, elastic, thermoelectric, and thermodynamic properties of the semiconductor compound InGaCuAgTe4: a comprehensive ab initio study","A Jabar, MN Khan, Z Fadil, S Benyoussef, L Bahmad, CJ Raorane, et al.","Journal of the Korean Ceramic Society 63 (2), 215–223"],
+["2026","2","Machine learning-assisted prediction and SHAP-based explainability of free vibration behavior of three-dimensional porous coated FGM shells resting on elastic foundations","MO Belarbi, S Feia, S Benounas, AA Daikh, A Garg, TN Nguyen","Composite Structures, 120193"],
+["2026","1","Buckling analysis of cosine functionally graded plates: Synergy between finite element and gradient boosting machine learning algorithm","TS Tayeb, MO Belarbi, TN Nguyen, S Bezzina, MSA Houari","Structural Engineering and Mechanics 98 (4), 471–503"],
+["2025","3","PolySAGN: Hierarchical multi-scale representation learning with scale-specific attention for accurate polyp segmentation","W Zhang, Y Zhang, M Fayaz, LM Dang, TN Nguyen, H Moon","Neurocomputing, 132338"],
+["2025","23","Isogeometric analysis of functionally graded triply periodic minimal surface shells","TN Nguyen, N Wattanasakulpong, NP Nguyen, P Fakharian, S Eiadtrong","Mechanics of Advanced Materials and Structures 32 (21), 5447–5460"],
+["2025","","Integrated first-principles study of Cd4Te5Pb: structural, optical, electronic, elastic, thermoelectric and thermodynamic properties","Z Fadil, A Jabar, MN Khan, S Benyoussef, L Bahmad, CJ Raorane, et al.","Chinese Journal of Physics"],
+["2025","7","End-to-end plant disease detection using transformers with collaborative hybrid assignment trainings","Y Li, M Fayaz, S Danish, L Tightiz, H Wang, TN Nguyen, LM Dang","Applied Soft Computing, 114137"],
+["2025","6","Masked autoencoder-based vision framework for robust fire detection in complex environments","H Wang, M Fayaz, A Ahmad, Y Li, TN Nguyen, LM Dang","Process Safety and Environmental Protection, 108019"],
+["2025","1","Improved meshfree moving-Kriging formulation for free vibration analysis of FGM-FGCNTRC sandwich shells","S Eiadtrong, TN Nguyen, MO Belarbi, N Wattanasakulpong","Computer Modeling in Engineering & Sciences 144 (3), 2819–2848"],
+["2025","24","Nonlinear free vibration of multi-stepped beams made of functionally graded triply periodic minimal surface materials with FG-GPLRC reinforcements","S Eiadtrong, TN Nguyen, N Wattanasakulpong","Engineering Analysis with Boundary Elements 177, 106271"],
+["2025","11","Improved first-order shear deformation-based finite element approach for predicting free vibration frequencies of functionally graded sandwich doubly curved shallow shells","S Benounas, MO Belarbi, P Van Vinh, A Garg, TN Nguyen","Journal of Engineering Mathematics 152 (1), 8"],
+["2025","1","Residual-like multi-kernel block and dynamic attention for deep neural networks","H Wang, Y Li, TN Nguyen, LM Dang","Engineering Applications of Artificial Intelligence 148, 110456"],
+["2025","1","Static instability of ultra-thin elastic structures using isogeometric analysis","TN Nguyen","Advances in Applied Mathematics and Mechanics 17 (3), 867–887"],
+["2024","50","Nonlinear vibration of sandwich beams made of FGM faces and FGP core under multiple moving loads using a quasi-3D theory","S Eiadtrong, TN Nguyen, N Wattanasakulpong","Engineering Structures 316, 118575"],
+["2024","79","PD-TR: End-to-end plant diseases detection using a transformer","H Wang, TH Nguyen, TN Nguyen, M Dang","Computers and Electronics in Agriculture 224, 109123"],
+["2024","101","Computer vision for plant disease recognition: A comprehensive review","M Dang, H Wang, Y Li, TH Nguyen, L Tightiz, N Xuan-Mung, TN Nguyen","The Botanical Review 90 (3), 251–311"],
+["2024","90","Fifth generation district heating and cooling: A comprehensive survey","LM Dang, LQ Nguyen, J Nam, TN Nguyen, S Lee, HK Song, H Moon","Energy Reports 11, 1723–1741"],
+["2024","4","An innovative formulation for predicting the punching shear behavior in two-way reinforced concrete slabs","NM Okasha, M Mirrashid, H Naderpour, TN Nguyen, AK Alzo’ubi","Mechanics Based Design of Structures and Machines, 1–22"],
+["2024","17","Malware attacks detection in IoT using recurrent neural network (RNN)","AA Alsadhan, AA Al-Atawi, H Karamti, A Jameel, I Zada, TN Nguyen","Intelligent Automation & Soft Computing 39 (2), 135–155"],
+["2024","4","Predicting magnetization plateaus in hexagonal boron nitride-like system: a theoretical study","Z Fadil, CJ Raorane, AB Cahaya, R El Fdil, S Karam, AAP Khan, et al.","Modern Physics Letters B 38 (05), 2450013"],
+["2023","15","Optimized computational intelligence model for estimating the flexural behavior of composite shear walls","M Mirrashid, H Naderpour, DPN Kontoni, A Jakubczyk-Gałczyńska, et al.","Buildings 13 (9), 2358"],
+["2023","24","CDD-TR: Automated concrete defect investigation using an improved deformable transformers","M Dang, H Wang, TH Nguyen, L Tightiz, LD Tien, TN Nguyen, NP Nguyen","Journal of Building Engineering 75, 106976"],
+["2023","50","Digital face manipulation creation and detection: A systematic review","M Dang, TN Nguyen","Electronics 12 (16), 3407"],
+["2023","8","VPBR: An automatic and low-cost vision-based biophysical properties recognition pipeline for pumpkin","LM Dang, M Nadeem, TN Nguyen, HY Park, ON Lee, HK Song, H Moon","Plants 12 (14), 2647"],
+["2023","13","Influence of vacancies on the dielectric characteristics of the hexagonal boron nitride lattice: theoretical study","Z Fadil, CJ Raorane, RE Fdil, S Karam, A El-marghany, P Rosaiah, et al.","Journal of Materials Science 58 (28), 11711–11722"],
+["2023","17","Vision-based white radish phenotypic trait measurement with smartphone imagery","LM Dang, K Min, TN Nguyen, HY Park, ON Lee, HK Song, H Moon","Agronomy 13 (6), 1630"],
+["2023","42","Toward explainable heat load patterns prediction for district heating","LM Dang, J Shin, Y Li, L Tightiz, TN Nguyen, HK Song, H Moon","Scientific Reports 13 (1), 7434"],
+["2023","59","Lightweight pixel-level semantic segmentation and analysis for sewer defects using deep learning","LM Dang, H Wang, Y Li, LQ Nguyen, TN Nguyen, HK Song, H Moon","Construction and Building Materials 371, 130792"],
+["2023","25","Alpha (α) assumed rotations and shear strains for spatially isotropic polygonal Reissner–Mindlin plate elements (αARS-Poly)","SH Nguyen, NN Nam, TD Hoang, TN Nguyen, T Nguyen-Thoi","Computers & Structures 274, 106900"],
+["2022","87","Deep learning-based masonry crack segmentation and real-life crack length measurement","LM Dang, H Wang, Y Li, LQ Nguyen, TN Nguyen, HK Song, H Moon","Construction and Building Materials 359, 129438"],
+["2022","44","Quadcopter precision landing on moving targets via disturbance observer-based controller and autonomous landing planner","XM Nguyen, NP Nguyen, T Nguyen, DB Pham, TV Mai, LNNT Ha, et al.","IEEE Access 10, 83580–83590"],
+["2022","37","Quadrotor formation control via terminal sliding mode approach: Theory and experiment results","NP Nguyen, D Park, DN Ngoc, N Xuan-Mung, TT Huynh, TN Nguyen, et al.","Drones 6 (7), 172"],
+["2022","1586","Explainable artificial intelligence: a comprehensive review","D Minh, HX Wang, YF Li, TN Nguyen","Artificial Intelligence Review 55 (5), 3503–3568"],
+["2022","23","Daily and seasonal heat usage patterns analysis in heat networks","LM Dang, S Lee, Y Li, C Oh, TN Nguyen, HK Song, H Moon","Scientific Reports 12, 9165"],
+["2022","43","A finite element level-set method for stress-based topology optimization of plate structures","SH Nguyen, TN Nguyen, T Nguyen-Thoi","Computers & Mathematics with Applications 115, 26–40"],
+["2022","138","Automatic tunnel lining crack evaluation and measurement using deep learning","LM Dang, H Wang, Y Li, Y Park, C Oh, TN Nguyen, H Moon","Tunnelling and Underground Space Technology 124, 104472"],
+["2022","17","Load-carrying capacity of ultra-thin shells with and without CNTs reinforcement","TN Nguyen, LM Dang, J Lee, PV Nguyen","Mathematics 10 (9), 1481"],
+["2022","18","Deep learned one-iteration nonlinear solver for solid mechanics","TN Nguyen, J Lee, L Dinh-Tien, LM Dang","International Journal for Numerical Methods in Engineering 123 (8), 1841–1860"],
+["2022","147","DefectTR: End-to-end defect detection for sewage networks using a transformer","LM Dang, H Wang, Y Li, TN Nguyen, H Moon","Construction and Building Materials 325, 126584"],
+["2022","13","Hybrid robot hand for stably manipulating one group objects","PV Nguyen, PN Nguyen, T Nguyen, TL Le","Archive of Mechanical Engineering 69"],
+["2022","5","Buckling resistance of axially loaded square concrete-filled double steel tubular columns","J Ci, M Ahmed, VL Tran, H Jia, S Chen, TN Nguyen","Steel and Composite Structures 43 (6), 689–706"],
+["2021","77","Deep learning-based sewer defect classification for highly imbalanced dataset","LM Dang, SJ Kyeong, Y Li, H Wang, TN Nguyen, H Moon","Computers & Industrial Engineering, 107630"],
+["2020","148","A comprehensive analysis of auxetic honeycomb sandwich plates with graphene nanoplatelets reinforcement","VN Nguyen, H Nguyen-Xuan, TN Nguyen, J Kang, J Lee","Composite Structures, 113213"],
+["2020","206","A deep learning-based hybrid framework for object detection and recognition in autonomous driving","Y Li, H Wang, LM Dang, TN Nguyen, D Han, A Lee, I Jang, H Moon","IEEE Access 8, 194228–194239"],
+["2020","33","A unified adaptive approach for membrane structures: Form finding and large deflection isogeometric analysis","TN Nguyen, TD Hien, T Nguyen-Thoi, J Lee","Computer Methods in Applied Mechanics and Engineering 369, 113239"],
+["2020","","Postbuckling isogeometric analysis of functionally graded carbon nanotube-reinforced composite shells under combined loading","TN Nguyen, PT Thang, DTT Do, S Lee, J Lee","Proceedings of ICSCEA 2019, Vietnam"],
+["2020","51","Geometrically nonlinear postbuckling behavior of imperfect FG-CNTRC shells under axial compression using isogeometric analysis","TN Nguyen, S Lee, PC Nguyen, H Nguyen-Xuan, J Lee","European Journal of Mechanics – A/Solids 84, 104066"],
+["2020","45","A novel data-driven nonlinear solver for solid mechanics using time series forecasting","TN Nguyen, H Nguyen-Xuan, J Lee","Finite Elements in Analysis and Design 171, 103377"],
+["2019","106","A novel analysis-prediction approach for geometrically nonlinear problems using group method of data handling","TN Nguyen, S Lee, H Nguyen-Xuan, J Lee","Computer Methods in Applied Mechanics and Engineering 354, 506–526"],
+["2019","162","NURBS-based postbuckling analysis of functionally graded carbon nanotube-reinforced composite shells","TN Nguyen, CH Thai, AT Luu, H Nguyen-Xuan, J Lee","Computer Methods in Applied Mechanics and Engineering 347, 983–1003"],
+["2018","77","NURBS-based analyses of functionally graded carbon nanotube-reinforced composite shells","TN Nguyen, CH Thai, H Nguyen-Xuan, J Lee","Composite Structures, 349–360"],
+["2018","54","Geometrically nonlinear analysis of functionally graded material plates using an improved moving Kriging meshfree method based on a refined plate theory","TN Nguyen, CH Thai, H Nguyen-Xuan, J Lee","Composite Structures 193, 268–280"],
+["2016","70","An improved moving Kriging meshfree method for plate analysis using a refined plate theory","CH Thai, TN Nguyen, T Rabczuk, H Nguyen-Xuan","Computers & Structures 176, 34–49"],
+["2016","56","A novel computational approach for functionally graded isotropic and sandwich plate structures based on a rotation-free meshfree method","TN Nguyen, CH Thai, H Nguyen-Xuan","Thin-Walled Structures 107, 473–488"]
+];
+const CITES=[[2018,26],[2019,64],[2020,99],[2021,111],[2022,239],[2023,457],[2024,743],[2025,1170],[2026,1048]];
+const JOURNALS=["International Journal of Mechanical Sciences","Engineering Structures","Steel and Composite Structures","Automation in Construction","Materials & Design","ACM Computing Surveys","Engineering with Computers","Archive of Applied Mechanics","Mechanics Based Design of Structures and Machines","Journal of Vibration Engineering & Technologies","Computer Modeling in Engineering & Sciences","CMC – Computers, Materials & Continua","Mathematical Methods in the Applied Sciences","Engineering Computations","Journal of Zhejiang University – SCIENCE A","Multidiscipline Modeling in Materials and Structures","Mathematical Problems in Engineering","Practice Periodical on Structural Design and Construction","Computers and Concrete","Geomechanics and Engineering","Advances in Civil Engineering","Case Studies in Thermal Engineering","Aerospace","Materials","Mathematics","Symmetry","Energies","Sustainability","Sensors","Artificial Intelligence and Applications","Jordanian Journal of Computers and Information Technology"];
+
+const pubs=P.map(([y,c,t,a,v])=>{
+  const mech=/shell|plate|beam|buckling|nonlinear|isogeometric|meshfree|kriging|functionally graded|FGM|composite|laminat|vibration|solid mechanics|membrane|topology|concrete|slab|column|shear wall|Reissner/i.test(t);
+  const oth=/ab initio|first-principles|boron nitride|quadcopter|quadrotor|robot hand/i.test(t);
+  return {y:+y,c:c===""?0:+c,t,a,v,area:mech?"mech":(oth?"oth":"ai"),first:/^TN Nguyen/.test(a)};
+});
+const esc=s=>s.replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const bold=a=>esc(a).replace(/\bTN Nguyen\b/g,"<b>TN Nguyen</b>");
+const row=(p,lead)=>`<li class="pub${lead?" rank":""}"><span class="yr">${lead??p.y}</span><div><div class="t">${esc(p.t)}</div><div class="a">${bold(p.a)}</div><div class="v">${esc(p.v)}${lead?", "+p.y:""}</div></div><span class="ct"><strong>${p.c.toLocaleString("en-US")}</strong>citations</span></li>`;
+
+/* representative: first-author mechanics papers chosen by hand */
+const SEL=["NURBS-based postbuckling analysis","A novel analysis-prediction approach","A unified adaptive approach for membrane","Geometrically nonlinear postbuckling behavior of imperfect","A novel data-driven nonlinear solver","Deep learned one-iteration nonlinear solver","Isogeometric analysis of functionally graded triply","Static instability of ultra-thin","Post-buckling analysis of FG-TPMS","An accurate coarse mesh-based","Geometrically nonlinear analysis of functionally graded material plates","A novel computational approach for functionally graded isotropic"];
+document.getElementById("sel").innerHTML=SEL.map(s=>pubs.find(p=>p.t.startsWith(s))).filter(Boolean).map(p=>row(p)).join("");
+document.getElementById("top").innerHTML=[...pubs].sort((a,b)=>b.c-a.c).slice(0,10).map((p,i)=>row(p,i+1)).join("");
+
+/* summary stats derived from the list */
+const tot=pubs.length, fa=pubs.filter(p=>p.first).length, mech=pubs.filter(p=>p.area==="mech").length, recent=pubs.filter(p=>p.y>=2024).length, hund=pubs.filter(p=>p.c>=100).length;
+document.getElementById("stats").innerHTML=[[tot,"papers listed"],[fa,"as first author"],[mech,"in mechanics & structures"],[recent,"since 2024"],[hund,"cited ≥ 100 times"]].map(([n,l])=>`<div><strong>${n}</strong><span>${l}</span></div>`).join("");
+
+/* full list */
+let area="all", q="";
+function renderAll(){
+  const f=pubs.filter(p=>(area==="all"||p.area===area)&&(!q||(p.t+" "+p.a+" "+p.v).toLowerCase().includes(q)));
+  document.getElementById("count").textContent=`${f.length} of ${tot} papers`;
+  const years=[...new Set(f.map(p=>p.y))].sort((a,b)=>b-a);
+  document.getElementById("all").innerHTML=years.map(y=>`<div class="yearhead">${y}</div><ol class="pubs">${f.filter(p=>p.y===y).map(p=>row(p)).join("")}</ol>`).join("");
+}
+renderAll();
+document.querySelectorAll(".seg button").forEach(b=>b.addEventListener("click",()=>{document.querySelectorAll(".seg button").forEach(x=>x.setAttribute("aria-pressed",x===b?"true":"false"));area=b.dataset.a;renderAll();}));
+document.getElementById("q").addEventListener("input",e=>{q=e.target.value.trim().toLowerCase();renderAll();});
+document.getElementById("journals").innerHTML=JOURNALS.map(j=>`<span>${esc(j)}</span>`).join("");
+
+/* citations-per-year chart: one linear scale for bars, ticks and labels */
+(function(){
+  const svg=document.getElementById("cites"),W=560,H=230,L=44,R=10,T=14,B=28,max=1200;
+  const ns="http://www.w3.org/2000/svg",cw=(W-L-R)/CITES.length,bw=cw*0.58,y=v=>T+(H-T-B)*(1-v/max);
+  let s="";
+  for(let v=0;v<=max;v+=300){s+=`<line x1="${L}" x2="${W-R}" y1="${y(v)}" y2="${y(v)}" stroke="var(--rule)" stroke-width="1"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" font-size="11" font-family="IBM Plex Mono, monospace" fill="var(--ink-3)">${v}</text>`;}
+  CITES.forEach(([yr,v],i)=>{const x=L+i*cw+(cw-bw)/2,last=i===CITES.length-1;
+    s+=`<rect x="${x}" y="${y(v)}" width="${bw}" height="${y(0)-y(v)}" rx="2" fill="var(--accent)" opacity="${last?0.55:1}"><title>${yr}: ${v} citations</title></rect>`;
+    s+=`<text x="${x+bw/2}" y="${y(v)-5}" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, monospace" fill="var(--ink-2)">${v}</text>`;
+    s+=`<text x="${x+bw/2}" y="${H-9}" text-anchor="middle" font-size="11" font-family="IBM Plex Mono, monospace" fill="var(--ink-3)">${yr}</text>`;});
+  svg.innerHTML=s;
+})();
+
+document.querySelectorAll(".copy[data-target]").forEach(b=>b.addEventListener("click",e=>{
+  const btn=e.currentTarget,el=document.getElementById(btn.dataset.target);
+  navigator.clipboard.writeText(el.textContent).then(()=>{btn.textContent="Copied";setTimeout(()=>btn.textContent="Copy",1500)})
+   .catch(()=>{const r=document.createRange();r.selectNodeContents(el);const s=getSelection();s.removeAllRanges();s.addRange(r);});
+}));
+
+const links=[...document.querySelectorAll("#nav a")];
+const io=new IntersectionObserver(es=>es.forEach(en=>{if(en.isIntersecting)links.forEach(l=>l.classList.toggle("on",l.getAttribute("href")==="#"+en.target.id));}),{rootMargin:"-35% 0px -60% 0px"});
+document.querySelectorAll("main section").forEach(s=>io.observe(s));
+
+/* shell panel: w = A sin(m*pi*x/L) cos(n*pi*theta/phi) */
+(function(){
+  const cv=document.getElementById("shell"),ctx=cv.getContext("2d");
+  const reduce=matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const NX=34,NT=26,L=2.4,R=1.0,PHI=1.05,m=3,n=2;
+  let W=0,H=0;
+  function size(){const d=Math.min(devicePixelRatio||1,2);W=cv.clientWidth;H=cv.clientHeight;cv.width=W*d;cv.height=H*d;ctx.setTransform(d,0,0,d,0,0);}
+  const tok=v=>getComputedStyle(document.documentElement).getPropertyValue(v).trim();
+  const hex=c=>{c=c.replace("#","");return [0,2,4].map(i=>parseInt(c.slice(i,i+2),16));};
+  function col(s,st){const u=(s+1)/2*(st.length-1),i=Math.min(st.length-2,Math.floor(u)),f=u-i;return `rgb(${st[i].map((v,k)=>Math.round(v+(st[i+1][k]-v)*f)).join(",")})`;}
+  function frame(t){
+    const st=["--c1","--c2","--c3","--c4"].map(v=>hex(tok(v)));
+    ctx.clearRect(0,0,W,H);
+    const A=0.11*(reduce?1:(0.55+0.45*Math.sin(t*0.0007)));
+    const yaw=reduce?-0.55:-0.55+0.25*Math.sin(t*0.00025),pitch=0.42,cy=Math.cos(yaw),sy=Math.sin(yaw),cp=Math.cos(pitch),sp=Math.sin(pitch);
+    const sc=Math.min(W/3.0,H/1.9),P=[];
+    for(let i=0;i<=NX;i++){P[i]=[];for(let j=0;j<=NT;j++){
+      const x=i/NX*L-L/2,th=(j/NT*2-1)*PHI,w=Math.sin(m*Math.PI*i/NX)*Math.cos(n*Math.PI*th/PHI),r=R+A*w;
+      const Y=r*Math.cos(th)-R*0.75,Z=r*Math.sin(th),X1=x*cy+Z*sy,Z1=-x*sy+Z*cy,Y1=Y*cp-Z1*sp;
+      P[i][j]={x:W/2+X1*sc,y:H*0.58-Y1*sc,w};}}
+    ctx.lineWidth=1;
+    const seg=(a,b)=>{ctx.strokeStyle=col((a.w+b.w)/2,st);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();};
+    for(let i=0;i<=NX;i++)for(let j=0;j<NT;j++)seg(P[i][j],P[i][j+1]);
+    for(let j=0;j<=NT;j++)for(let i=0;i<NX;i++)seg(P[i][j],P[i+1][j]);
+    if(!reduce)requestAnimationFrame(frame);
+  }
+  size();addEventListener("resize",()=>{size();if(reduce)frame(0);});
+  reduce?frame(0):requestAnimationFrame(frame);
+})();
+</script>
+
+</body>
+</html>
