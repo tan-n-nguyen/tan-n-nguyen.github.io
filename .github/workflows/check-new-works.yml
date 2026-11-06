@@ -1,0 +1,41 @@
+name: Check for new publications
+
+on:
+  schedule:
+    - cron: "17 23 * * 0"   # every Monday 06:17 Asia/Bangkok
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Self-test with offline sample
+        run: |
+          python scripts/check_new_works.py --sample tests/sample_openalex.json --out /tmp/test.md
+          grep -q "A brand new isogeometric shell paper" /tmp/test.md
+          test "$(grep -c '^- \[ \]' /tmp/test.md)" = "1"
+      - name: Look up works for the ORCID
+        run: python scripts/check_new_works.py
+      - name: Open or update the review issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          TITLE="New publications to review"
+          if grep -q "^- \[ \]" new_works.md; then
+            NUM=$(gh issue list --state open --search "\"$TITLE\" in:title" --json number --jq '.[0].number')
+            if [ -n "$NUM" ]; then
+              gh issue edit "$NUM" --body-file new_works.md
+            else
+              gh issue create --title "$TITLE" --body-file new_works.md
+            fi
+          else
+            echo "Nothing new this week."
+          fi
