@@ -1,9 +1,18 @@
 {
-  "note": "Works the weekly OpenAlex/Crossref check must never propose for the website. Confirmed by the site owner on 2026-11-06.",
+  "note": "Works the weekly OpenAlex/Crossref check must never propose for the website. Confirmed by the site owner on 2026-11-06 (includes the owner's 2018 truss paper, kept off the site by choice, and works by other authors wrongly linked to the ORCID).",
   "titles": [
     "Fast analysis and prediction approach for geometrically nonlinear bending analysis of plates and shells using artificial neural networks",
     "Fast analysis approach for instability problems of thin shells utilizing ANNs and a Bayesian regularization back-propagation algorithm",
     "Chebyshev polynomial-based Ritz method for thermal buckling and free vibration behaviors of metal foam beams",
-    "Deep Learning Approaches for Continuous Sign Language Recognition: A Comprehensive Review"
+    "Deep Learning Approaches for Continuous Sign Language Recognition: A Comprehensive Review",
+    "Truss Damage Detection Using Modified Differential Evolution Algorithm with Comparative Studies",
+    "Male Thyroid Cancer Patients Treated by Transoral Endoscopic Thyroidectomy Vestibular Approach (TOETVA): Surgical Outcomes and Distinct Experiences",
+    "Adverse effects and potential accumulation of the herbicide atrazine in the cyanobacterium Microcystis aeruginosa",
+    "How does momentum benefit deep neural networks architecture design? A few case studies",
+    "3D-UCaps: 3D Capsules Unet for Volumetric Image Segmentation",
+    "Integration of 3D Geological Modeling and Fault Seal Analysis for Pore Pressure Characterization of a High Pressure and High Temperature Exploration Well in Nam Con Son Basin, a Case Study Offshore Vietnam",
+    "Reliable Detection of Interest Flooding Attack in Real Deployment of Named Data Networking",
+    "Content Poisoning in Named Data Networking: Comprehensive characterization of real deployment",
+    "Interest Flooding Detection in NDN Using Hypothesis Testing"
   ]
 }
