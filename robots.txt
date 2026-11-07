@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://tannnguyen.com/sitemap.xml
