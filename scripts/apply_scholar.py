@@ -75,6 +75,21 @@ def clean_venue(v: str, year: str) -> str:
     return re.sub(r",\s*" + re.escape(year) + r"\s*$", "", v) if year else v
 
 
+def journal_name(venue: str) -> str:
+    """'Thin-Walled Structures 220, 112000' -> 'Thin-Walled Structures'."""
+    name = re.split(r",|\s+\d", venue.strip(), maxsplit=1)[0].strip()
+    return name.rstrip(" .:;") or venue.strip()
+
+
+def add_news(html: str, items) -> str:
+    start = html.index("const NEWS=") + len("const NEWS=")
+    end = html.index("];", start) + 1
+    news = json.loads(html[start:end])
+    have = {norm(n.get("title", "")) for n in news if n.get("type") == "paper"}
+    fresh = [n for n in items if norm(n["title"]) not in have]
+    return html[:start] + json.dumps(fresh + news, ensure_ascii=False) + html[end:]
+
+
 def check_metrics(m, n_rows):
     if len(m) != 6 or not all(isinstance(x, int) and x >= 0 for x in m):
         raise SystemExit(f"metrics malformed: {m}")
@@ -145,8 +160,13 @@ def main() -> int:
     if len(rows) < before_n:
         raise SystemExit("paper count decreased; refusing")
 
+    d = date.fromisoformat(snap["date"])
+    news_items = [{"d": d.strftime("%Y-%m"), "type": "paper", "title": r[2], "venue": journal_name(r[4])}
+                  for r in rows[before_n:]]
     rows.sort(key=lambda r: -int(r[0] or 0))  # stable: keeps order within a year
     html = html[:ps] + fmt_rows(rows) + html[pe:]
+    if news_items:
+        html = add_news(html, news_items)
 
     c, c21, h, h21, i10, i1021 = metrics
     html, n1 = re.subn(r"<tr><td>Citations</td><td>[\d,]+</td><td>[\d,]+</td></tr>",
@@ -157,7 +177,6 @@ def main() -> int:
                        f"<tr><td>i10-index</td><td>{i10}</td><td>{i1021}</td></tr>", html)
     hist = [[int(a), int(b)] for a, b in snap["hist"]]
     html, n4 = re.subn(r"const CITES=\[.*?\];", "const CITES=" + json.dumps(hist, separators=(",", ":")) + ";", html)
-    d = date.fromisoformat(snap["date"])
     mon = MONTHS[d.month - 1]
     html, n5 = re.subn(r"retrieved \d{1,2} \w+ \d{4}", f"retrieved {d.day} {mon} {d.year}", html)
     html, n6 = re.subn(r"The \d{4} bar covers January to early \w+\.", f"The {d.year} bar covers January to early {mon}.", html)
@@ -170,6 +189,7 @@ def main() -> int:
         "metrics": {"citations": c, "h": h, "i10": i10},
         "papers_before": before_n, "papers_after": len(rows),
         "citation_counts_updated": len(updated), "added": added,
+        "news_added": [n["title"][:60] + " | " + n["venue"] for n in news_items],
         "skipped": skipped,
         "site_papers_not_found_on_scholar": unmatched_titles,
     }

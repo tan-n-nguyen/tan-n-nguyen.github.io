@@ -139,6 +139,15 @@ ol.pubs{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
 .plain li span{color:var(--ink-3)}
 .chips{display:flex;flex-wrap:wrap;gap:.35rem}
 .chips span{font-size:var(--s-xs);border:1px solid var(--rule);border-radius:4px;padding:.2rem .5rem;color:var(--ink-2);background:var(--surface)}
+.news{list-style:none;margin:0;padding:0;display:flex;flex-direction:column}
+.news li{display:grid;grid-template-columns:6.5rem minmax(0,1fr);gap:1rem;padding:.8rem 0;border-top:1px solid var(--rule)}
+.news li:last-child{border-bottom:1px solid var(--rule)}
+.news .d{font-family:var(--f-mono);font-size:var(--s-sm);color:var(--ink-3);font-variant-numeric:tabular-nums}
+.news .k{display:inline-block;font-family:var(--f-mono);font-size:var(--s-xs);text-transform:uppercase;letter-spacing:.08em;color:var(--accent);margin-right:.5rem}
+.news .x{color:var(--ink);line-height:1.5}
+.more{align-self:flex-start;font:inherit;font-size:var(--s-xs);font-family:var(--f-mono);background:none;border:1px solid var(--rule);color:var(--ink-2);border-radius:999px;padding:.3rem .8rem;cursor:pointer}
+.more:hover{border-color:var(--accent);color:var(--accent)}
+@media (max-width:480px){.news li{grid-template-columns:minmax(0,1fr);gap:.15rem}}
 .todo{border:1px dashed var(--ink-3);border-radius:6px;padding:1rem 1.1rem;font-size:var(--s-sm);color:var(--ink-2);background:var(--surface)}
 
 .contact{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
@@ -167,6 +176,7 @@ footer{font-size:var(--s-xs);color:var(--ink-3);border-top:1px solid var(--rule)
     </div>
     <nav aria-label="Sections"><ul id="nav">
       <li><a href="#about" class="on">About</a></li>
+      <li><a href="#news">News</a></li>
       <li><a href="#metrics">Citation metrics</a></li>
       <li><a href="#research">Research interests</a></li>
       <li><a href="#activities">Research activities</a></li>
@@ -194,6 +204,12 @@ footer{font-size:var(--s-xs);color:var(--ink-3);border-top:1px solid var(--rule)
         <canvas id="shell" aria-label="Animated wireframe of a cylindrical shell panel in a buckled mode, coloured by radial displacement"></canvas>
         <div class="cap"><span>Cylindrical panel under axial compression · buckling mode (m, n) = (3, 2)</span><span class="legend">w/w<sub>max</sub> −1 <i></i> +1</span></div>
       </div>
+    </section>
+
+    <section id="news">
+      <div class="head"><div class="eyebrow">Latest</div><h2>News</h2></div>
+      <ol class="news" id="newslist"></ol>
+      <button class="more" type="button" id="news-more" hidden>Show all news</button>
     </section>
 
     <section id="metrics">
@@ -415,6 +431,8 @@ const P=[
 ["2016","70","An improved moving Kriging meshfree method for plate analysis using a refined plate theory","CH Thai, TN Nguyen, T Rabczuk, H Nguyen-Xuan","Computers & Structures 176, 34–49"],
 ["2016","56","A novel computational approach for functionally graded isotropic and sandwich plate structures based on a rotation-free meshfree method","TN Nguyen, CH Thai, H Nguyen-Xuan","Thin-Walled Structures 107, 473–488"]
 ];
+/* News: newest first. Papers are added automatically by scripts/apply_scholar.py; activities are added by hand. */
+const NEWS=[{"d": "2026-11","type": "activity","text": "New personal website launched at tannnguyen.com."},{"d": "2026-03","type": "activity","text": "Promoted to Associate Professor, Department of Architectural Engineering, Sejong University."},{"d": "2026","type": "paper","title": "An accurate coarse mesh-based analysis approach for nonlinear bending and post-buckling problems of plates and shells utilizing recurrent neural networks with Bayesian regularization back-propagation algorithm","venue": "Finite Elements in Analysis and Design"},{"d": "2026","type": "paper","title": "Post-buckling analysis of FG-TPMS shells with geometric imperfection and porosity under axial compression","venue": "Computer Modeling in Engineering & Sciences"},{"d": "2025","type": "paper","title": "Isogeometric analysis of functionally graded triply periodic minimal surface shells","venue": "Mechanics of Advanced Materials and Structures"},{"d": "2025","type": "paper","title": "Static instability of ultra-thin elastic structures using isogeometric analysis","venue": "Advances in Applied Mathematics and Mechanics"}];
 const CITES=[[2018,26],[2019,64],[2020,99],[2021,111],[2022,239],[2023,457],[2024,743],[2025,1170],[2026,1048]];
 const JOURNALS=["International Journal of Mechanical Sciences","Engineering Structures","Steel and Composite Structures","Automation in Construction","Materials & Design","ACM Computing Surveys","Engineering with Computers","Archive of Applied Mechanics","Mechanics Based Design of Structures and Machines","Journal of Vibration Engineering & Technologies","Computer Modeling in Engineering & Sciences","CMC – Computers, Materials & Continua","Mathematical Methods in the Applied Sciences","Engineering Computations","Journal of Zhejiang University – SCIENCE A","Multidiscipline Modeling in Materials and Structures","Mathematical Problems in Engineering","Practice Periodical on Structural Design and Construction","Computers and Concrete","Geomechanics and Engineering","Advances in Civil Engineering","Case Studies in Thermal Engineering","Aerospace","Materials","Mathematics","Symmetry","Energies","Sustainability","Sensors","Artificial Intelligence and Applications","Jordanian Journal of Computers and Information Technology"];
 
@@ -426,6 +444,19 @@ const pubs=P.map(([y,c,t,a,v])=>{
 const esc=s=>s.replace(/[&<>"]/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
 const bold=a=>esc(a).replace(/\bTN Nguyen\b/g,"<b>TN Nguyen</b>");
 const row=(p,lead)=>`<li class="pub${lead?" rank":""}"><span class="yr">${lead??p.y}</span><div><div class="t">${esc(p.t)}</div><div class="a">${bold(p.a)}</div><div class="v">${esc(p.v)}${lead?", "+p.y:""}</div></div><span class="ct"><strong>${p.c.toLocaleString("en-US")}</strong>citations</span></li>`;
+
+/* news */
+(function(){
+  const MON=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  const fd=d=>{const p=String(d).split("-");return p.length>1?MON[+p[1]-1]+" "+p[0]:p[0];};
+  const item=n=>n.type==="paper"
+    ? `<li><span class="d">${fd(n.d)}</span><span class="x"><span class="k">Paper</span>Paper entitled &ldquo;${esc(n.title)}&rdquo; has been published in <i>${esc(n.venue)}</i>.</span></li>`
+    : `<li><span class="d">${fd(n.d)}</span><span class="x"><span class="k">${esc(n.tag||"News")}</span>${esc(n.text)}</span></li>`;
+  const ol=document.getElementById("newslist"),btn=document.getElementById("news-more"),N=6;
+  const draw=all=>{ol.innerHTML=(all?NEWS:NEWS.slice(0,N)).map(item).join("");btn.hidden=all||NEWS.length<=N;};
+  btn.addEventListener("click",()=>draw(true));
+  draw(false);
+})();
 
 /* representative: first-author mechanics papers chosen by hand */
 const SEL=["NURBS-based postbuckling analysis","A novel analysis-prediction approach","A unified adaptive approach for membrane","Geometrically nonlinear postbuckling behavior of imperfect","A novel data-driven nonlinear solver","Deep learned one-iteration nonlinear solver","Isogeometric analysis of functionally graded triply","Static instability of ultra-thin","Post-buckling analysis of FG-TPMS","An accurate coarse mesh-based","Geometrically nonlinear analysis of functionally graded material plates","A novel computational approach for functionally graded isotropic"];
