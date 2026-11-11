@@ -1,1 +1,3 @@
 new_works.md
+__pycache__/
+*.pyc
