@@ -4,7 +4,7 @@ set -euo pipefail
 cd "$(dirname "$0")/.."
 T=$(mktemp -d)
 # 1. a real Scholar snapshot must match every paper on the site and add nothing
-python3 -I scripts/apply_scholar.py tests/scholar_2026-11-07.json --dry-run > "$T/r1.json"
+python3 -I scripts/apply_scholar.py tests/scholar_2026-11-16.json --dry-run > "$T/r1.json"
 python3 -c "import json,sys;d=json.load(open('$T/r1.json'));assert d['added']==[] and d['news_added']==[] and d['site_papers_not_found_on_scholar']==[], d"
 # 2. a simulated future week: one new paper added, excluded/notice rows rejected, page still valid
 cp index.html "$T/p.html"
