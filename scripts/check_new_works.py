@@ -32,9 +32,13 @@ def norm(title: str) -> str:
 
 def site_titles(html: str) -> set:
     """Titles in the P array of index.html: each row is [year, cites, title, ...]."""
-    block = html.split("const P=[", 1)[1].split("];", 1)[0]
-    rows = re.findall(r'\["\d{4}","\d*","((?:[^"\\]|\\.)*)"', block)
-    return {norm(t) for t in rows}
+    start = html.index("const P=") + len("const P=")
+    end = html.index("];", start) + 1
+    rows = json.loads(html[start:end])  # same parser as apply_scholar.py, any spacing
+    titles = {norm(r[2]) for r in rows}
+    if len(titles) < 10:
+        raise SystemExit(f"only {len(titles)} titles read from index.html; refusing")
+    return titles
 
 
 def excluded_titles() -> set:

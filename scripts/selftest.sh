@@ -16,4 +16,8 @@ PY
 node --check "$T/p.js"
 # 3. a half-loaded page must be refused
 if python3 -I scripts/apply_scholar.py tests/scholar_halfloaded.json --dry-run >/dev/null 2>&1; then echo "half-loaded page was not refused"; exit 1; fi
+# 4. the weekly OpenAlex check must read every site title, before and after an update rewrites the list
+python3 -I -c "import sys;sys.path.insert(0,'scripts');from check_new_works import site_titles as s;a=len(s(open('index.html').read()));b=len(s(open('$T/p.html').read()));assert a>=50 and b==a+1,(a,b)"
+python3 -I scripts/check_new_works.py --sample tests/sample_openalex.json --out "$T/w.md" >/dev/null
+test "$(grep -c '^- \[ \]' "$T/w.md")" = "2"
 echo "selftest OK"
