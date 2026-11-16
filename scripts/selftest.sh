@@ -3,9 +3,18 @@
 set -euo pipefail
 cd "$(dirname "$0")/.."
 T=$(mktemp -d)
-# 1. a real Scholar snapshot must match every paper on the site and add nothing
+# 1. a real Scholar snapshot must match every paper on the site and add nothing.
+#    Papers added by later syncs are not in this snapshot; they are accepted only
+#    if the updater announced them in NEWS (it always does when it adds a paper).
 python3 -I scripts/apply_scholar.py tests/scholar_2026-11-16.json --dry-run > "$T/r1.json"
-python3 -c "import json,sys;d=json.load(open('$T/r1.json'));assert d['added']==[] and d['news_added']==[] and d['site_papers_not_found_on_scholar']==[], d"
+python3 -I - "$T/r1.json" <<'PY'
+import json,re,sys
+d=json.load(open(sys.argv[1])); assert d['added']==[] and d['news_added']==[], d
+h=open('index.html',encoding='utf-8').read(); s=h.index('const NEWS=')+11
+news=[re.sub(r'[^a-z0-9]','',n['title'].lower()) for n in json.loads(h[s:h.index('];',s)+1]) if n.get('type')=='paper']
+miss=[t for t in d['site_papers_not_found_on_scholar'] if not any(n.startswith(re.sub(r'[^a-z0-9]','',t.lower())) for n in news)]
+assert not miss, ('on the site but neither in the reference snapshot nor announced in NEWS', miss)
+PY
 # 2. a simulated future week: one new paper added, excluded/notice rows rejected, page still valid
 cp index.html "$T/p.html"
 python3 -I scripts/apply_scholar.py tests/scholar_future_sim.json --html "$T/p.html" > "$T/r2.json"
